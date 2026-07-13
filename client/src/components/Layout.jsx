@@ -1,10 +1,40 @@
-import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, Users, UserPlus, IndianRupee, MessageCircle, Library } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { LayoutDashboard, Users, UserPlus, IndianRupee, MessageCircle, Library, Menu } from 'lucide-react';
 
 export default function Layout() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <div className="app-container">
-      <aside className="sidebar">
+      {/* Mobile Header */}
+      <div className="mobile-header">
+        <div className="mobile-header-title">
+          <Library size={28} color="var(--primary-color)" />
+          Satyasai
+        </div>
+        <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
+          <Menu size={28} />
+        </button>
+      </div>
+
+      {/* Sidebar Overlay */}
+      <div 
+        className={`sidebar-overlay ${isMobileMenuOpen ? 'mobile-open' : ''}`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      ></div>
+
+      <aside className={`sidebar ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-header">
           <div className="flex items-center gap-md">
             <Library size={36} color="var(--primary-color)" />

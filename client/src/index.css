@@ -435,3 +435,104 @@ select.form-control option {
   visibility: visible;
   opacity: 1;
 }
+
+/* =========================================================================
+   Mobile Responsiveness (max-width: 768px)
+   ========================================================================= */
+@media (max-width: 768px) {
+  /* Layout Adjustments */
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .main-content {
+    margin-left: 0;
+    padding: var(--spacing-sm);
+    margin-top: 64px; /* Space for mobile header */
+  }
+
+  /* Grid Layouts Stack Vertically */
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Sidebar transforms into off-canvas menu */
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform var(--transition-normal);
+  }
+  
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  /* Mobile Header Bar */
+  .mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: rgba(10, 15, 24, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 90;
+    padding: 0 var(--spacing-md);
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .mobile-header-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mobile-menu-btn {
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Sidebar overlay backdrop */
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 95;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-normal);
+  }
+  
+  .sidebar-overlay.mobile-open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Hide mobile header and overlay on desktop */
+@media (min-width: 769px) {
+  .mobile-header {
+    display: none;
+  }
+  .sidebar-overlay {
+    display: none;
+  }
+}
