@@ -27,7 +27,7 @@ export default function StudentDetail() {
       try {
         await api.deleteStudent(id);
         navigate('/students');
-      } catch (error) {
+      } catch {
         alert('Failed to delete student');
       }
     }

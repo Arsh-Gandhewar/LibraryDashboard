@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Send, Clock, AlertTriangle } from 'lucide-react';
+import { CalendarPlus, Trash2, Clock, AlertTriangle } from 'lucide-react';
 import { api } from '../api';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
@@ -9,7 +9,8 @@ export default function Reminders() {
   const [dueStudents, setDueStudents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchDueStudents = () => {
+    setLoading(true);
     api.getDueToday().then(data => {
       setDueStudents(data);
       setLoading(false);
@@ -17,22 +18,34 @@ export default function Reminders() {
       console.error(err);
       setLoading(false);
     });
+  };
+
+  useEffect(() => {
+    fetchDueStudents();
   }, []);
 
-  const sendWhatsApp = (student) => {
-    const isExpired = new Date(student.endDate) < new Date();
-    const status = isExpired ? 'expired' : 'due today';
-    
-    // Format the phone number (remove spaces, ensure country code)
-    let phone = student.phone.replace(/\D/g, '');
-    if (phone.length === 10) {
-      phone = '91' + phone; // Add India country code by default if missing
+  const handleRenew = async (id) => {
+    if (window.confirm('Are you sure you want to renew this subscription for 1 month?')) {
+      try {
+        const payload = { renewalDate: new Date().toISOString().split('T')[0] };
+        const updatedStudent = await api.renewStudent(id, payload);
+        alert(`Successfully renewed! New End Date: ${new Date(updatedStudent.expiryDate).toLocaleDateString()}`);
+        fetchDueStudents();
+      } catch (error) {
+        alert(error.message || 'Failed to renew subscription');
+      }
     }
+  };
 
-    const message = `Hello ${student.name}, this is a gentle reminder from the Library that your subscription has ${status}. Please renew it to continue your seamless study experience. Thank you!`;
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-    
-    window.open(url, '_blank');
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
+      try {
+        await api.deleteStudent(id);
+        fetchDueStudents();
+      } catch {
+        alert('Failed to delete student');
+      }
+    }
   };
 
   if (loading) return <div className="loading">Loading Reminders...</div>;
@@ -40,14 +53,14 @@ export default function Reminders() {
   return (
     <div>
       <div className="mb-lg">
-        <h1>WhatsApp Reminders</h1>
-        <p className="text-muted">Send automated messages to students whose subscription is due today or has expired.</p>
+        <h1>Action Required</h1>
+        <p className="text-muted">Manage students whose subscription is due today or has expired.</p>
       </div>
 
       <Card>
         <div className="flex items-center gap-md mb-lg">
           <AlertTriangle color="var(--warning-color)" size={32} />
-          <h2>Action Required ({dueStudents.length})</h2>
+          <h2>Needs Attention ({dueStudents.length})</h2>
         </div>
 
         <div className="table-responsive">
@@ -64,28 +77,37 @@ export default function Reminders() {
             </thead>
             <tbody>
               {dueStudents.map(student => {
-                const isExpired = new Date(student.endDate) < new Date();
+                const isExpired = new Date(student.expiryDate) < new Date();
                 return (
                   <tr key={student._id}>
                     <td>
                       <div className="font-large">{student.name}</div>
                     </td>
-                    <td>{student.phone}</td>
+                    <td>{student.mobile}</td>
                     <td>{student.seatNumber || 'Waiting'}</td>
-                    <td>{new Date(student.endDate).toLocaleDateString()}</td>
+                    <td>{new Date(student.expiryDate).toLocaleDateString()}</td>
                     <td>
                       <Badge variant={isExpired ? 'danger' : 'warning'}>
-                        {isExpired ? 'Expired' : 'Due Today'}
+                        {student.status}
                       </Badge>
                     </td>
                     <td>
-                      <Button 
-                        variant="success" 
-                        icon={Send} 
-                        onClick={() => sendWhatsApp(student)}
-                      >
-                        Send WhatsApp
-                      </Button>
+                      <div className="flex gap-sm">
+                        <Button 
+                          variant="primary" 
+                          icon={CalendarPlus} 
+                          onClick={() => handleRenew(student._id)}
+                        >
+                          Renew
+                        </Button>
+                        <Button 
+                          variant="danger" 
+                          icon={Trash2} 
+                          onClick={() => handleDelete(student._id)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -94,7 +116,7 @@ export default function Reminders() {
                 <tr>
                   <td colSpan="6" className="text-center text-muted" style={{ padding: '40px 0' }}>
                     <Clock size={48} className="mb-sm mx-auto opacity-50" />
-                    <div>All caught up! No students are due today.</div>
+                    <div>All caught up! No students are due or expired.</div>
                   </td>
                 </tr>
               )}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, UserCheck, Clock, CheckCircle, IndianRupee, AlertCircle, PlusCircle } from 'lucide-react';
+import { Users, UserCheck, Clock, IndianRupee, AlertCircle, PlusCircle } from 'lucide-react';
 import { api } from '../api';
 import { Card, StatCard } from '../components/Card';
 import { Badge } from '../components/Badge';
@@ -59,7 +59,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-2">
         <Card className="mb-lg">
           <div className="flex justify-between items-center mb-md">
-            <h2>Due Today & Expired</h2>
+            <h2>Due Today</h2>
             <Link to="/reminders">
               <Button variant="secondary" icon={AlertCircle}>View All</Button>
             </Link>
@@ -75,14 +75,12 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                {dueToday.slice(0, 5).map(student => (
+                {dueToday.filter(s => s.status === 'Due Today').slice(0, 5).map(student => (
                   <tr key={student._id}>
                     <td>{student.name}</td>
-                    <td>{student.seatNumber}</td>
+                    <td>{student.seatNumber || 'Waiting'}</td>
                     <td>
-                      <Badge variant={new Date(student.endDate) < new Date() ? 'danger' : 'warning'}>
-                        {new Date(student.endDate) < new Date() ? 'Expired' : 'Due Today'}
-                      </Badge>
+                      <Badge variant="warning">Due Today</Badge>
                     </td>
                     <td>
                       <Link to={`/students/${student._id}/renew`}>
@@ -91,7 +89,7 @@ export default function Dashboard() {
                     </td>
                   </tr>
                 ))}
-                {dueToday.length === 0 && (
+                {dueToday.filter(s => s.status === 'Due Today').length === 0 && (
                   <tr>
                     <td colSpan="4" className="text-center text-muted">No students due today.</td>
                   </tr>

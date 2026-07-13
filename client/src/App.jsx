@@ -4,7 +4,6 @@ import Dashboard from './pages/Dashboard';
 import Students from './pages/Students';
 import AdmissionForm from './pages/AdmissionForm';
 import StudentDetail from './pages/StudentDetail';
-import RenewalForm from './pages/RenewalForm';
 import Revenue from './pages/Revenue';
 import Reminders from './pages/Reminders';
 
@@ -19,7 +18,6 @@ function App() {
           <Route path="students/new" element={<AdmissionForm />} />
           <Route path="students/:id" element={<StudentDetail />} />
           <Route path="students/:id/edit" element={<AdmissionForm />} />
-          <Route path="students/:id/renew" element={<RenewalForm />} />
           <Route path="revenue" element={<Revenue />} />
           <Route path="reminders" element={<Reminders />} />
         </Route>
