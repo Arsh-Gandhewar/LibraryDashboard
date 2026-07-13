@@ -10,8 +10,8 @@ export const api = {
       },
     });
     if (!res.ok) {
-      const error = await res.json().catch(() => ({ message: res.statusText }));
-      throw new Error(error.message || 'API Error');
+      const data = await res.json().catch(() => ({ message: res.statusText }));
+      throw new Error(data.error || data.message || 'API Error');
     }
     return res.json();
   },
