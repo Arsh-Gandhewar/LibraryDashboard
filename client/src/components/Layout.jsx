@@ -8,7 +8,7 @@ export default function Layout() {
         <div className="sidebar-header">
           <div className="flex items-center gap-md">
             <Library size={36} color="var(--primary-color)" />
-            <h2 style={{ marginBottom: 0 }}>Library Pro</h2>
+            <h2 style={{ marginBottom: 0 }}>Satyasai Abhyasika</h2>
           </div>
         </div>
         <nav className="sidebar-nav">
