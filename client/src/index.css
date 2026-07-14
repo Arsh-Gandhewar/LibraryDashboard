@@ -349,8 +349,7 @@ select.form-control option {
 }
 .table {
   width: 100%;
-  min-width: 0;
-  table-layout: fixed;
+  min-width: 600px;
   border-collapse: separate;
   border-spacing: 0;
 }
@@ -358,6 +357,7 @@ select.form-control option {
   padding: 16px;
   text-align: left;
   border-bottom: 1px solid var(--card-border);
+  white-space: nowrap;
 }
 .table th {
   font-weight: 600;
@@ -530,10 +530,8 @@ select.form-control option {
   }
 
   .table th, .table td {
-    padding: 10px 8px;
-    font-size: 14px;
-    word-break: break-word;
-    overflow-wrap: break-word;
+    padding: 12px 16px;
+    font-size: 15px;
   }
 
   h1 {
