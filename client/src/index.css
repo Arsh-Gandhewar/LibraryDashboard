@@ -163,6 +163,8 @@ a:hover {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .top-navbar {
@@ -291,6 +293,10 @@ select.form-control option {
   gap: var(--spacing-lg);
 }
 
+.grid > * {
+  min-width: 0;
+}
+
 .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
 .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
 .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
@@ -344,6 +350,7 @@ select.form-control option {
 .table {
   width: 100%;
   min-width: 0;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
 }
@@ -473,16 +480,22 @@ select.form-control option {
 @media (max-width: 768px) {
   .main-content {
     padding: var(--spacing-sm);
-    max-width: 100vw;
+    max-width: 100%;
   }
 
   .glass-panel {
     padding: var(--spacing-md);
   }
 
+  .grid {
+    gap: var(--spacing-sm);
+  }
+
   .table th, .table td {
     padding: 10px 8px;
-    font-size: 15px;
+    font-size: 14px;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   h1 {
