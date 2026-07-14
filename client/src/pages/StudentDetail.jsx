@@ -66,7 +66,7 @@ export default function StudentDetail() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 grid-stack-mobile">
         <Card>
           <div className="flex justify-between items-center mb-md">
             <h2>Profile Information</h2>

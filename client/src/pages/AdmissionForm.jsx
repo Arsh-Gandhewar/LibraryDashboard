@@ -75,7 +75,7 @@ export default function AdmissionForm() {
         <h1>{isEdit ? 'Edit Student' : 'New Admission'}</h1>
       </div>
 
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 grid-stack-mobile">
         <Card>
           <form onSubmit={handleSubmit}>
             <div className="form-group">

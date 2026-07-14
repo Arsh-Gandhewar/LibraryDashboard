@@ -479,7 +479,7 @@ select.form-control option {
    ========================================================================= */
 @media (max-width: 768px) {
   .main-content {
-    padding: var(--spacing-sm);
+    padding: 16px;
     max-width: 100%;
   }
 
@@ -487,8 +487,46 @@ select.form-control option {
     padding: var(--spacing-md);
   }
 
+  /* Stat cards: 2 columns on mobile instead of 1 */
+  .grid-cols-4,
+  .grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Grids containing tables/large content should stack to 1 column */
+  .grid-stack-mobile {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Compact stat cards */
+  .stat-card {
+    gap: 6px;
+  }
+
+  .stat-card .stat-value {
+    font-size: var(--font-xl);
+  }
+
+  .stat-card .stat-label {
+    font-size: var(--font-base);
+  }
+
+  .stat-card .flex svg,
+  .stat-card svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .glass-panel.stat-card {
+    padding: 14px;
+  }
+
   .grid {
-    gap: var(--spacing-sm);
+    gap: 10px;
   }
 
   .table th, .table td {

@@ -112,7 +112,7 @@ export default function Revenue() {
         <StatCard label="Renewals" value={`₹${data.renewalCollection}`} icon={IndianRupee} color="var(--primary-color)" />
       </div>
 
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 grid-stack-mobile">
         <Card>
           <h2 className="mb-md">Revenue by Plan</h2>
           <div style={{ height: '400px', display: 'flex', justifyContent: 'center' }}>

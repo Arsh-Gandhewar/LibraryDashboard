@@ -56,7 +56,7 @@ export default function Dashboard() {
         <StatCard label="Monthly Revenue" value={`₹${data.monthlyRevenue}`} icon={IndianRupee} color="var(--primary-color)" />
       </div>
 
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 grid-stack-mobile">
         <Card className="mb-lg">
           <div className="flex justify-between items-center mb-md">
             <h2>Due Today</h2>
