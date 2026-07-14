@@ -1,27 +1,19 @@
 import { useEffect, useState } from 'react';
 import {
   Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
   Tooltip,
   Legend,
   ArcElement
 } from 'chart.js';
-import { Bar, Doughnut } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 import { IndianRupee, TrendingUp, Calendar, Users } from 'lucide-react';
 import { api } from '../api';
 import { Card, StatCard } from '../components/Card';
 
 ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
+  ArcElement,
   Tooltip,
-  Legend,
-  ArcElement
+  Legend
 );
 
 export default function Revenue() {
@@ -77,16 +69,7 @@ export default function Revenue() {
     ],
   };
 
-  const collectionTypeData = {
-    labels: ['Admissions', 'Renewals'],
-    datasets: [
-      {
-        label: 'Collection Type',
-        data: [data.admissionFeeCollection || 0, data.renewalCollection || 0],
-        backgroundColor: ['rgba(79, 138, 255, 0.8)', 'rgba(56, 178, 172, 0.8)'],
-      }
-    ]
-  };
+
 
   const chartOptions = {
     responsive: true,
@@ -112,37 +95,12 @@ export default function Revenue() {
         <StatCard label="Renewals" value={`₹${data.renewalCollection}`} icon={IndianRupee} color="var(--primary-color)" />
       </div>
 
-      <div className="grid grid-cols-2 grid-stack-mobile">
-        <Card>
+      <Card>
           <h2 className="mb-md">Revenue by Plan</h2>
           <div style={{ height: '400px', display: 'flex', justifyContent: 'center' }}>
             <Doughnut data={planChartData} options={chartOptions} />
           </div>
         </Card>
-        
-        <Card>
-          <h2 className="mb-md">Collection Breakdown</h2>
-          <div style={{ height: '400px', display: 'flex', justifyContent: 'center' }}>
-            <Bar 
-              data={collectionTypeData} 
-              options={{
-                ...chartOptions,
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    ticks: { color: '#f0f4f8', font: { size: 14 } },
-                    grid: { color: 'rgba(255,255,255,0.1)' }
-                  },
-                  x: {
-                    ticks: { color: '#f0f4f8', font: { size: 16 } },
-                    grid: { display: false }
-                  }
-                }
-              }} 
-            />
-          </div>
-        </Card>
-      </div>
     </div>
   );
 }
