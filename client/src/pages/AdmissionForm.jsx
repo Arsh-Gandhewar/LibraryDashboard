@@ -70,7 +70,7 @@ export default function AdmissionForm() {
 
   return (
     <div>
-      <div className="flex items-center gap-md mb-lg">
+      <div className="flex items-center flex-wrap gap-md mb-lg">
         <Button variant="secondary" icon={ArrowLeft} onClick={() => navigate(-1)}>Back</Button>
         <h1>{isEdit ? 'Edit Student' : 'New Admission'}</h1>
       </div>
@@ -109,8 +109,8 @@ export default function AdmissionForm() {
               </div>
             )}
 
-            <div className="flex items-center justify-end mt-lg">
-              <div className="flex gap-md">
+            <div className="flex items-center justify-end flex-wrap mt-lg">
+              <div className="flex flex-wrap gap-md">
                 <Button type="button" variant="danger" icon={X} onClick={() => navigate('/students')}>Cancel</Button>
                 <Button type="submit" variant="success" icon={Save}>{isEdit ? 'Update Student' : 'Admit Student'}</Button>
               </div>

@@ -53,7 +53,7 @@ export default function StudentDetail() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-lg">
+      <div className="flex items-center justify-between flex-wrap gap-sm mb-lg">
         <div className="flex items-center gap-md">
           <Button variant="secondary" icon={ArrowLeft} onClick={() => navigate(-1)}>Back</Button>
           <h1>Student Details</h1>
