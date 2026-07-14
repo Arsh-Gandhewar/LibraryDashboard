@@ -37,7 +37,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-lg">
+      <div className="flex justify-between items-center flex-wrap gap-sm mb-lg">
         <h1>Dashboard</h1>
         <Link to="/students/new">
           <Button icon={PlusCircle}>New Admission</Button>

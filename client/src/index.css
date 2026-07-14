@@ -291,6 +291,7 @@ select.form-control option {
 /* Utilities */
 .flex { display: flex; }
 .flex-col { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
 .items-center { align-items: center; }
 .justify-between { justify-content: space-between; }
 .justify-center { justify-content: center; }
@@ -462,6 +463,19 @@ select.form-control option {
 @media (max-width: 768px) {
   .main-content {
     padding: var(--spacing-sm);
+  }
+
+  .navbar-container {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .navbar-brand {
+    gap: 8px;
+  }
+
+  .navbar-brand h2 {
+    font-size: 1.25rem;
+    white-space: nowrap;
   }
 
   .grid-cols-2,

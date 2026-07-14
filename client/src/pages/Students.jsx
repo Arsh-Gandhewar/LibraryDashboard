@@ -34,7 +34,7 @@ export default function Students() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-lg">
+      <div className="flex justify-between items-center flex-wrap gap-sm mb-lg">
         <h1>Students</h1>
         <Link to="/students/new">
           <Button icon={UserPlus}>New Admission</Button>
