@@ -342,21 +342,16 @@ const renewStudent = async (req, res) => {
       return res.status(404).json({ error: 'Student not found' });
     }
 
-    const { renewalDate } = req.body;
-
-    if (!renewalDate) {
-      return res.status(400).json({ error: 'Renewal date is required' });
-    }
-
-    // New expiry = renewalDate + 1 calendar month
-    const newExpiry = addOneMonth(renewalDate);
+    // New expiry = previous end date + 1 calendar month
+    // This ensures early/late payments don't shift the subscription cycle
+    const newExpiry = addOneMonth(student.expiryDate);
 
     // Renewal amount = plan fee only (no admission fee on renewal)
     const amount = planFee(student.plan);
 
     // Record this renewal
     student.renewalHistory.push({
-      renewalDate,
+      renewalDate: new Date(),
       expiryDate: newExpiry,
       amount,
       paidAt: new Date(),

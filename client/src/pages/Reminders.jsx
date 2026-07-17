@@ -27,8 +27,7 @@ export default function Reminders() {
   const handleRenew = async (id) => {
     if (window.confirm('Are you sure you want to renew this subscription for 1 month?')) {
       try {
-        const payload = { renewalDate: new Date().toISOString().split('T')[0] };
-        const updatedStudent = await api.renewStudent(id, payload);
+        const updatedStudent = await api.renewStudent(id, {});
         alert(`Successfully renewed! New End Date: ${new Date(updatedStudent.expiryDate).toLocaleDateString()}`);
         fetchDueStudents();
       } catch (error) {
