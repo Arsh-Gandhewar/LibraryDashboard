@@ -193,7 +193,9 @@ const createStudent = async (req, res) => {
     const expiryDate = addOneMonth(joiningDate);
 
     // --- Calculate totalPaid (plan fee + optional admission fee) ---
-    const totalPaid = planFee(plan) + (admissionFeePaid ? ADMISSION_FEE : 0);
+    // No admission fee for VIP plan
+    const actualAdmissionFee = (plan === 'VIP') ? 0 : ADMISSION_FEE;
+    const totalPaid = planFee(plan) + (admissionFeePaid ? actualAdmissionFee : 0);
 
     // --- Create and save ---
     const student = new Student({
@@ -552,14 +554,16 @@ const getRevenue = async (_req, res) => {
         revenueByPlan[s.plan].count  += 1;
 
         // Admission fee
-        if (s.admissionFeePaid) {
-          admissionFeeCollection += ADMISSION_FEE;
-          monthlyRevenue += ADMISSION_FEE;
+        // No admission fee for VIP plan
+        const actualAdmissionFee = (s.plan === 'VIP') ? 0 : ADMISSION_FEE;
+        if (s.admissionFeePaid && actualAdmissionFee > 0) {
+          admissionFeeCollection += actualAdmissionFee;
+          monthlyRevenue += actualAdmissionFee;
         }
 
         // Today's collection from this admission
         if (created >= today && created <= todayEnd) {
-          todayCollection += fee + (s.admissionFeePaid ? ADMISSION_FEE : 0);
+          todayCollection += fee + (s.admissionFeePaid ? actualAdmissionFee : 0);
         }
       }
 
