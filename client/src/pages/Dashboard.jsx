@@ -122,7 +122,7 @@ export default function Dashboard() {
                     <td>{student.name}</td>
                     <td>{student.plan}</td>
                     <td>{student.seatNumber || 'Waiting'}</td>
-                    <td>{new Date(student.joiningDate).toLocaleDateString()}</td>
+                    <td>{new Date(student.joiningDate).toLocaleDateString('en-GB')}</td>
                   </tr>
                 ))}
                 {(!data.recentAdmissions || data.recentAdmissions.length === 0) && (

@@ -28,7 +28,7 @@ export default function Reminders() {
     if (window.confirm('Are you sure you want to renew this subscription for 1 month?')) {
       try {
         const updatedStudent = await api.renewStudent(id, {});
-        alert(`Successfully renewed! New End Date: ${new Date(updatedStudent.expiryDate).toLocaleDateString()}`);
+        alert(`Successfully renewed! New End Date: ${new Date(updatedStudent.expiryDate).toLocaleDateString('en-GB')}`);
         fetchDueStudents();
       } catch (error) {
         alert(error.message || 'Failed to renew subscription');
@@ -84,7 +84,7 @@ export default function Reminders() {
                     </td>
                     <td>{student.mobile}</td>
                     <td>{student.seatNumber || 'Waiting'}</td>
-                    <td>{new Date(student.expiryDate).toLocaleDateString()}</td>
+                    <td>{new Date(student.expiryDate).toLocaleDateString('en-GB')}</td>
                     <td>
                       <Badge variant={isExpired ? 'danger' : 'warning'}>
                         {student.status}

@@ -54,7 +54,7 @@ export default function SeatMap({ seats = {}, onSeatSelect, selectedSeat }) {
         {seat.status === 'occupied' && (
           <div className="seat-tooltip">
             <strong>{seat.studentName}</strong><br />
-            Joined: {new Date(seat.joiningDate).toLocaleDateString()}
+            Joined: {new Date(seat.joiningDate).toLocaleDateString('en-GB')}
           </div>
         )}
         {seat.status === 'vacant' && (

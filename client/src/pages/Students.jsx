@@ -80,7 +80,7 @@ export default function Students() {
                       <td>{student.mobile}</td>
                       <td>{student.plan}</td>
                       <td>{student.seatNumber || 'Waiting'}</td>
-                      <td>{new Date(student.joiningDate).toLocaleDateString()}</td>
+                      <td>{new Date(student.joiningDate).toLocaleDateString('en-GB')}</td>
                       <td>
                         <Badge variant={isExpired ? 'danger' : 'success'}>
                           {isExpired ? 'Expired' : 'Active'}

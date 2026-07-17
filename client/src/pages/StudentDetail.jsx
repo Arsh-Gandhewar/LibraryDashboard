@@ -38,7 +38,7 @@ export default function StudentDetail() {
       try {
         const updatedStudent = await api.renewStudent(id, {});
         setStudent(updatedStudent);
-        alert(`Successfully renewed! New End Date: ${new Date(updatedStudent.expiryDate).toLocaleDateString()}`);
+        alert(`Successfully renewed! New End Date: ${new Date(updatedStudent.expiryDate).toLocaleDateString('en-GB')}`);
       } catch (error) {
         alert(error.message || 'Failed to renew subscription');
       }
@@ -92,13 +92,13 @@ export default function StudentDetail() {
               <div className="font-large">{student.seatNumber || 'N/A'}</div>
             </div>
             <div>
-              <span className="text-muted block mb-sm">Join Date</span>
-              <div className="font-large">{new Date(student.joiningDate).toLocaleDateString()}</div>
+              <div className="text-muted text-sm mb-xs">Join Date</div>
+              <div className="font-large">{new Date(student.joiningDate).toLocaleDateString('en-GB')}</div>
             </div>
             <div>
-              <span className="text-muted block mb-sm">End Date</span>
-              <div className={`font-large ${isExpired ? 'text-danger' : ''}`}>
-                {new Date(student.expiryDate).toLocaleDateString()}
+              <div className="text-muted text-sm mb-xs">End Date</div>
+              <div className="font-large" style={{ color: isExpired ? 'var(--danger-color)' : 'inherit' }}>
+                {new Date(student.expiryDate).toLocaleDateString('en-GB')}
               </div>
             </div>
           </div>
@@ -125,9 +125,9 @@ export default function StudentDetail() {
                 {student.renewalHistory && student.renewalHistory.length > 0 ? (
                   student.renewalHistory.map((history, idx) => (
                     <tr key={idx}>
-                      <td>{new Date(history.renewalDate).toLocaleDateString()}</td>
+                      <td>{new Date(history.renewalDate).toLocaleDateString('en-GB')}</td>
                       <td>₹{history.amount}</td>
-                      <td>{new Date(history.expiryDate).toLocaleDateString()}</td>
+                      <td>{new Date(history.expiryDate).toLocaleDateString('en-GB')}</td>
                     </tr>
                   ))
                 ) : (
