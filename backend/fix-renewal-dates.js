@@ -1,20 +1,5 @@
-/**
- * fix-renewal-dates.js — One-time migration script
- * 
- * Fixes all students whose renewal expiry dates were incorrectly calculated
- * from the payment date instead of the previous end date.
- * 
- * Correct logic: each renewal's expiryDate = previous expiryDate + 1 month
- *   - First renewal: joiningDate + 1 month + 1 month
- *   - Second renewal: first renewal expiry + 1 month
- *   - etc.
- * 
- * Run with: node backend/fix-renewal-dates.js
- */
-
 require('dotenv').config();
 const mongoose = require('mongoose');
-const connectDB = require('./config/db');
 const Student = require('./models/Student');
 
 const addOneMonth = (date) => {
@@ -25,7 +10,10 @@ const addOneMonth = (date) => {
 
 (async () => {
   try {
-    await connectDB();
+    // Connect explicitly to the 'test' database where the 95 students are stored
+    const uri = process.env.MONGO_URI.replace('/libraryApp', '/test');
+    console.log('Connecting to URI:', uri);
+    await mongoose.connect(uri);
     console.log('Connected to database.\n');
 
     const students = await Student.find({ isActive: true });
