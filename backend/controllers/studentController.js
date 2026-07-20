@@ -294,7 +294,28 @@ const updateStudent = async (req, res) => {
     if (mobile !== undefined)          student.mobile          = mobile;
     if (plan !== undefined)            student.plan            = plan;
     if (seatNumber !== undefined)      student.seatNumber      = effectivePlan === 'Waiting' ? null : seatNumber;
-    if (joiningDate !== undefined)     student.joiningDate     = joiningDate;
+    if (joiningDate !== undefined) {
+      const oldJoinTime = new Date(student.joiningDate).getTime();
+      const newJoinTime = new Date(joiningDate).getTime();
+      
+      student.joiningDate = joiningDate;
+      
+      // If the join date was modified, shift all expiry dates accordingly
+      if (oldJoinTime !== newJoinTime && !isNaN(newJoinTime)) {
+        let currentExpiry = addOneMonth(joiningDate);
+        
+        // Recalculate expiry for every renewal history entry
+        for (let i = 0; i < student.renewalHistory.length; i++) {
+          student.renewalHistory[i].expiryDate = addOneMonth(currentExpiry);
+          currentExpiry = student.renewalHistory[i].expiryDate;
+        }
+        
+        // Final expiry date of the student
+        student.expiryDate = currentExpiry;
+      }
+    }
+    
+    // Explicit expiryDate override (if provided directly)
     if (expiryDate !== undefined)      student.expiryDate      = expiryDate;
     if (admissionFeePaid !== undefined) student.admissionFeePaid = admissionFeePaid;
 
