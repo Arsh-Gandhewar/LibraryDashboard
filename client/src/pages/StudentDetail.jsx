@@ -116,7 +116,7 @@ export default function StudentDetail() {
             <table className="table">
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th>Payment Date</th>
                   <th>Amount Paid</th>
                   <th>New End Date</th>
                 </tr>
@@ -125,7 +125,12 @@ export default function StudentDetail() {
                 {student.renewalHistory && student.renewalHistory.length > 0 ? (
                   student.renewalHistory.map((history, idx) => (
                     <tr key={idx}>
-                      <td>{new Date(history.renewalDate).toLocaleDateString('en-GB')}</td>
+                      <td>
+                        {new Date(history.paidAt || history.renewalDate).toLocaleString('en-GB', {
+                          day: '2-digit', month: '2-digit', year: 'numeric',
+                          hour: '2-digit', minute: '2-digit', hour12: true
+                        })}
+                      </td>
                       <td>₹{history.amount}</td>
                       <td>{new Date(history.expiryDate).toLocaleDateString('en-GB')}</td>
                     </tr>
