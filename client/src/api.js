@@ -27,4 +27,5 @@ export const api = {
   getDashboard: () => api.fetchJSON('/api/dashboard'),
   getRevenue: () => api.fetchJSON('/api/revenue'),
   getDueToday: () => api.fetchJSON('/api/due'),
+  sendReminders: () => api.fetchJSON('/api/reminders/send', { method: 'POST' }),
 };

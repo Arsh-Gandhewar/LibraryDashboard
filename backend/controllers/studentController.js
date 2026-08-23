@@ -666,6 +666,33 @@ const getDueStudents = async (_req, res) => {
   }
 };
 
+// ──────────────────────────────────────────────
+//  POST /api/reminders/send — send WhatsApp reminders
+// ──────────────────────────────────────────────
+const sendDueReminders = async (req, res) => {
+  try {
+    const { sendWhatsAppMessage } = require('../services/whatsappService');
+    const today = startOfDay(new Date());
+    const endOfToday = endOfDay(new Date());
+
+    const dueStudents = await Student.find({
+      isActive: true,
+      expiryDate: { $gte: today, $lte: endOfToday }
+    });
+
+    let sentCount = 0;
+    for (const student of dueStudents) {
+      const success = await sendWhatsAppMessage(student.mobile, 'subscription_due_reminder');
+      if (success) sentCount++;
+    }
+
+    res.json({ message: `Successfully sent ${sentCount} reminders`, sentCount });
+  } catch (err) {
+    console.error('sendDueReminders error:', err.message);
+    res.status(500).json({ error: 'Failed to send reminders' });
+  }
+};
+
 // ═══════════════════════════════════════════════
 //  EXPORTS
 // ═══════════════════════════════════════════════
@@ -680,4 +707,5 @@ module.exports = {
   getDashboard,
   getRevenue,
   getDueStudents,
+  sendDueReminders,
 };

@@ -21,6 +21,7 @@ const {
   getDashboard,
   getRevenue,
   getDueStudents,
+  sendDueReminders,
 } = require('../controllers/studentController');
 
 // ─── Student CRUD ────────────────────────────
@@ -40,5 +41,6 @@ router.get('/seats', getSeats);
 router.get('/dashboard', getDashboard);
 router.get('/revenue',   getRevenue);
 router.get('/due',       getDueStudents);
+router.post('/reminders/send', sendDueReminders);
 
 module.exports = router;

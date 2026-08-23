@@ -47,13 +47,33 @@ export default function Reminders() {
     }
   };
 
+  const handleSendWhatsApp = async () => {
+    if (window.confirm('Send automated WhatsApp reminders to all students due today?')) {
+      try {
+        const result = await api.sendReminders();
+        alert(result.message);
+      } catch (err) {
+        alert(err.message || 'Failed to send WhatsApp reminders');
+      }
+    }
+  };
+
   if (loading) return <div className="loading">Loading Reminders...</div>;
 
   return (
     <div>
-      <div className="mb-lg">
-        <h1>Action Required</h1>
-        <p className="text-muted">Manage students whose subscription is due today or has expired.</p>
+      <div className="flex justify-between items-center mb-lg flex-wrap gap-md">
+        <div>
+          <h1>Action Required</h1>
+          <p className="text-muted">Manage students whose subscription is due today or has expired.</p>
+        </div>
+        <Button 
+          variant="primary" 
+          onClick={handleSendWhatsApp}
+          disabled={dueStudents.length === 0}
+        >
+          Send WhatsApp Reminders
+        </Button>
       </div>
 
       <Card>
