@@ -28,9 +28,8 @@ const initCronJobs = () => {
       console.log(`Found ${dueStudents.length} students due today.`);
 
       for (const student of dueStudents) {
-        // You'll need to create this template in your Meta WhatsApp dashboard:
         // Template name: 'subscription_due_reminder'
-        const success = await sendWhatsAppMessage(student.mobile, 'subscription_due_reminder');
+        const success = await sendWhatsAppMessage(student.mobile, 'subscription_due_reminder', student.name);
         if (success) {
           console.log(`Reminder sent to ${student.name} (${student.mobile})`);
         }

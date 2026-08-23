@@ -7,7 +7,7 @@ const axios = require('axios');
  * - WHATSAPP_ACCESS_TOKEN
  * - WHATSAPP_PHONE_NUMBER_ID
  */
-const sendWhatsAppMessage = async (to, templateName, languageCode = 'en_US') => {
+const sendWhatsAppMessage = async (to, templateName, studentName, languageCode = 'en_US') => {
   const token = process.env.WHATSAPP_ACCESS_TOKEN;
   const phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
 
@@ -33,7 +33,18 @@ const sendWhatsAppMessage = async (to, templateName, languageCode = 'en_US') => 
         name: templateName,
         language: {
           code: languageCode
-        }
+        },
+        components: studentName ? [
+          {
+            type: 'body',
+            parameters: [
+              {
+                type: 'text',
+                text: studentName
+              }
+            ]
+          }
+        ] : []
       }
     };
 

@@ -682,7 +682,7 @@ const sendDueReminders = async (req, res) => {
 
     let sentCount = 0;
     for (const student of dueStudents) {
-      const success = await sendWhatsAppMessage(student.mobile, 'subscription_due_reminder');
+      const success = await sendWhatsAppMessage(student.mobile, 'subscription_due_reminder', student.name);
       if (success) sentCount++;
     }
 
