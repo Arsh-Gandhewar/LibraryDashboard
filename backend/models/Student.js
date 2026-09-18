@@ -81,6 +81,16 @@ const studentSchema = new mongoose.Schema({
     default: true,
   },
 
+  deletedAt: {
+    type: Date,
+    default: null,
+  },
+
+  deletedSeatNumber: {
+    type: String,
+    default: null,
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,

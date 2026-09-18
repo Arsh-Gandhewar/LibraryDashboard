@@ -17,6 +17,7 @@ export const api = {
   },
 
   getStudents: () => api.fetchJSON('/api/students'),
+  getArchivedStudents: () => api.fetchJSON('/api/students/archived'),
   getStudent: (id) => api.fetchJSON(`/api/students/${id}`),
   createStudent: (data) => api.fetchJSON('/api/students', { method: 'POST', body: JSON.stringify(data) }),
   updateStudent: (id, data) => api.fetchJSON(`/api/students/${id}`, { method: 'PUT', body: JSON.stringify(data) }),

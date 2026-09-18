@@ -125,10 +125,7 @@ const getAllStudents = async (_req, res) => {
 // ──────────────────────────────────────────────
 const getStudentById = async (req, res) => {
   try {
-    const student = await Student.findOne({
-      _id: req.params.id,
-      isActive: true,
-    });
+    const student = await Student.findById(req.params.id);
 
     if (!student) {
       return res.status(404).json({ error: 'Student not found' });
@@ -341,10 +338,14 @@ const deleteStudent = async (req, res) => {
       return res.status(404).json({ error: 'Student not found' });
     }
 
+    // Preserve seat info in deletedSeatNumber and free up seatNumber for new students
+    student.deletedSeatNumber = student.seatNumber;
+    student.seatNumber = null;
     student.isActive = false;
+    student.deletedAt = new Date();
     await student.save();
 
-    res.json({ message: 'Student deleted successfully' });
+    res.json({ message: 'Student removed successfully' });
   } catch (err) {
     console.error('deleteStudent error:', err.message);
     res.status(500).json({ error: 'Server error while deleting student' });
@@ -492,10 +493,11 @@ const getDashboard = async (_req, res) => {
 
     // ── Monthly revenue ──
     //   = totalPaid of students created this month
-    //   + sum of renewal amounts paid this month
+    //   + sum of renewal amounts paid this month (including historical records of deleted students)
+    const allStudents = await Student.find({});
     let monthlyRevenue = 0;
 
-    for (const s of allActive) {
+    for (const s of allStudents) {
       const created = startOfDay(s.createdAt);
       if (created >= monthStart && created <= monthEnd) {
         monthlyRevenue += s.totalPaid;
@@ -550,7 +552,8 @@ const getRevenue = async (_req, res) => {
     const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
     const monthEnd   = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59, 999);
 
-    const allActive = await Student.find({ isActive: true });
+    // Query all students so all transactions/collections remain intact even if user is removed
+    const allStudents = await Student.find({});
 
     let monthlyRevenue       = 0;  // total revenue this month
     let todayCollection      = 0;  // admissions + renewals from today
@@ -563,7 +566,7 @@ const getRevenue = async (_req, res) => {
       Waiting: { count: 0, amount: 0 },
     };
 
-    for (const s of allActive) {
+    for (const s of allStudents) {
       const created = startOfDay(s.createdAt);
 
       // ── Students created this month ──
@@ -615,6 +618,20 @@ const getRevenue = async (_req, res) => {
   } catch (err) {
     console.error('getRevenue error:', err.message);
     res.status(500).json({ error: 'Server error while fetching revenue' });
+  }
+};
+
+// ──────────────────────────────────────────────
+//  GET /api/students/archived — list deleted students
+// ──────────────────────────────────────────────
+const getArchivedStudents = async (_req, res) => {
+  try {
+    const students = await Student.find({ isActive: false })
+      .sort({ deletedAt: -1, createdAt: -1 });
+    res.json(students);
+  } catch (err) {
+    console.error('getArchivedStudents error:', err.message);
+    res.status(500).json({ error: 'Server error while fetching archived students' });
   }
 };
 
@@ -708,4 +725,5 @@ module.exports = {
   getRevenue,
   getDueStudents,
   sendDueReminders,
+  getArchivedStudents,
 };

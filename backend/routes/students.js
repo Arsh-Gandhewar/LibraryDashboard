@@ -22,14 +22,16 @@ const {
   getRevenue,
   getDueStudents,
   sendDueReminders,
+  getArchivedStudents,
 } = require('../controllers/studentController');
 
 // ─── Student CRUD ────────────────────────────
-router.get('/students',     getAllStudents);   // List all active students
-router.get('/students/:id', getStudentById);  // Get single student
-router.post('/students',    createStudent);    // Create new student
-router.put('/students/:id', updateStudent);    // Update existing student
-router.delete('/students/:id', deleteStudent); // Soft-delete student
+router.get('/students',          getAllStudents);      // List all active students
+router.get('/students/archived', getArchivedStudents); // List deleted / archived students
+router.get('/students/:id',      getStudentById);      // Get single student (active or archived)
+router.post('/students',         createStudent);       // Create new student
+router.put('/students/:id',      updateStudent);       // Update existing student
+router.delete('/students/:id',   deleteStudent);       // Soft-delete student (archive)
 
 // ─── Renewal ─────────────────────────────────
 router.post('/students/:id/renew', renewStudent);
